@@ -8,8 +8,8 @@ function App() {
   const [playerBoxes, setPlayerBoxes] = useState([]);
   const [enemyBoxes, setEnemyBoxes] = useState([])
   //Puntos jugador y maquina
-  const [playerPoints, setPlayerP] = useState(0);
-  const [enemyPoints, setEnemyP] = useState(0);
+  const [playerPoints, setPlayerP] = useState(null);
+  const [enemyPoints, setEnemyP] = useState(null);
   //fin de la partida
   const [message, setMessage] = useState(null);
 
@@ -73,7 +73,7 @@ function App() {
     let newArray = [];
     for (let i = 0; i < cols; i++) {
       for (let j = 0; j < cols; j++) {
-        if (playerBoxes[i][j] === 0) {
+        if (playerBoxes[i][j] === 0 || playerBoxes[i][j] === 1) {
           newArray.push([i, j])
         }
       }
@@ -81,16 +81,13 @@ function App() {
     let enemyPLay = newArray[Math.floor(Math.random() * newArray.length)];
     let i = enemyPLay[0];
     let j = enemyPLay[1];
-    if (enemyBoxes[i][j] === 1) {
+    if (playerBoxes[i][j] === 1) {
       changeValue(playerBoxes, setPlayerBoxes, 2, i, j);
       setPlayerP(playerPoints - 1);
-      checkWinner()
       enemy(cols);
     } else {
       changeValue(playerBoxes, setPlayerBoxes, 3, i, j);
-      checkWinner();
     }
-
   }
 
   //revisar si hay ganador
@@ -100,21 +97,20 @@ function App() {
     }else if(enemyPoints === 0){
       setMessage("The Player has won");
     }
+    console.log(playerPoints + " " + enemyPoints);
   }
 
-
+  //Maneja click jugador
   function handleClick(type, i, j) {
     if (type === "enemy") {
       if (enemyBoxes[i][j] === 1) {
         changeValue(enemyBoxes, setEnemyBoxes, 2, i, j);
         setEnemyP(enemyPoints - 1);
-        checkWinner();
       } else if (enemyBoxes[i][j] === 0) {
         changeValue(enemyBoxes, setEnemyBoxes, 3, i, j);
-        checkWinner();
+        
         enemy(10);
       }
-
     }
   }
 
@@ -123,6 +119,10 @@ function App() {
     fillBoxes(10, setPlayerBoxes, setPlayerP);
     fillBoxes(10, setEnemyBoxes, setEnemyP);
   }, []);
+
+  useEffect(() => {
+    checkWinner();
+  },);
 
   useEffect(() => {
 
