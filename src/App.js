@@ -4,12 +4,16 @@ import BoxContainer from './components/BoxContainer';
 
 
 function App() {
+  //Matriz grid
   const [playerBoxes, setPlayerBoxes] = useState([]);
   const [enemyBoxes, setEnemyBoxes] = useState([])
+  //Puntos jugador y maquina
   const [playerPoints, setPlayerP] = useState(0);
   const [enemyPoints, setEnemyP] = useState(0);
+  //fin de la partida
   const [message, setMessage] = useState(null);
 
+  //llena matriz con bloques
   function fillBoxes(cols, setBoxes, setPoints) {
     var newArray = [];
     var points = 0;
@@ -57,12 +61,14 @@ function App() {
     setBoxes(newArray);
   }
 
+  //Cambiar valor a un bloque
   function changeValue(boxes, setBoxes, value, i, j) {
     let newArray = [...boxes];
     newArray[i].splice(j, 1, value);
     setBoxes(newArray);
   }
 
+  //control maquina
   function enemy(cols) {
     let newArray = [];
     for (let i = 0; i < cols; i++) {
@@ -87,6 +93,7 @@ function App() {
 
   }
 
+  //revisar si hay ganador
   function checkWinner(){
     if(playerPoints === 0){
       setMessage("The Enemy has won");
@@ -94,6 +101,7 @@ function App() {
       setMessage("The Player has won");
     }
   }
+
 
   function handleClick(type, i, j) {
     if (type === "enemy") {
